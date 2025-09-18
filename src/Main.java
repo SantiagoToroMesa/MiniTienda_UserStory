@@ -72,20 +72,26 @@ public class Main {
         String name = "";
         double pricep;
         int quantity;
+
         while(true) {
             name = JOptionPaneUtils.InputString("Enter the product name");
             pricep = JOptionPaneUtils.InputDouble("Enter the product price");
             quantity = JOptionPaneUtils.InputInt("Enter the product stock");
+
             if (Nproduct.contains(name)) {
-                JOptionPaneUtils.ShowMessageTimed("el producto " + name + " ya existe en el inventario  ", 4000);
+                JOptionPaneUtils.ShowMessageTimed("❌ The product " + name + " exits in the inventory.", 4000);
+                return precio;
             }
-            if(name == null || pricep <= 0 || quantity <= 0){
-                JOptionPaneUtils.ShowMessage("The value cant be null!");
+            else if(name == null || pricep <= 0 || quantity <= 0){
+                JOptionPaneUtils.ShowMessage("⚠️ The value cant be null or <= 0!");
+                continue;
             }
             else{
                 break;
             }
         }
+
+        // Solo se ejecuta si el producto es válido y no existe
         Nproduct.add(name);
         double[] newPrice = Arrays.copyOf(precio, precio.length + 1);
         newPrice[newPrice.length - 1] = pricep;
@@ -93,29 +99,34 @@ public class Main {
         return newPrice;
     }
 
+
+
     public static void listInventory(){
         if(Nproduct.isEmpty()){
             JOptionPaneUtils.ShowMessage("The invetory is empty");
             return;
         }
+        else{
+            StringBuilder inventory = new StringBuilder();
+            inventory.append("---------------------  📦 Inventory  ---------------------\n");
 
-        StringBuilder inventory = new StringBuilder();
-        inventory.append("---------------------  📦 Inventory  ---------------------\n");
+            inventory.append(String.format("%-5s | %-20s | %-15s | %-10s\n",
+                    "ID", "Product", "Price", "Stock"));
+            inventory.append("------------------------------------------------------------\n");
 
-        inventory.append(String.format("%-5s | %-20s | %-15s | %-10s\n",
-                "ID", "Product", "Price", "Stock"));
-        inventory.append("------------------------------------------------------------\n");
+            for (int i = 0; i < Nproduct.size(); i++) {
+                String productname = Nproduct.get(i);
+                double price = precio[i];
+                Integer stocker = stock.get(productname);
 
-        for (int i = 0; i < Nproduct.size(); i++) {
-            String productname = Nproduct.get(i);
-            double price = precio[i];
-            Integer stocker = stock.get(productname);
+                inventory.append(String.format("%-5d | %-20s | $%,-14.2f | %-10d\n",
+                        (i + 1), productname, price, stocker));
+            }
 
-            inventory.append(String.format("%-5d | %-20s | $%,-14.2f | %-10d\n",
-                    (i + 1), productname, price, stocker));
+            JOptionPaneUtils.messagemenu(inventory);
         }
 
-        JOptionPaneUtils.messagemenu(inventory);
+
     }
 
     public static void buyProduct(int num, Integer quantity){
