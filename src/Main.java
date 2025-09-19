@@ -79,11 +79,11 @@ public class Main {
             quantity = JOptionPaneUtils.InputInt("Enter the product stock");
 
             if (Nproduct.contains(name)) {
-                JOptionPaneUtils.ShowMessageTimed("❌ The product " + name + " exits in the inventory.", 4000);
+                JOptionPaneUtils.ShowMessageTimed("The product " + name + " exits in the inventory.", 4000);
                 return precio;
             }
             else if(name == null || pricep <= 0 || quantity <= 0){
-                JOptionPaneUtils.ShowMessage("⚠️ The value cant be null or <= 0!");
+                JOptionPaneUtils.ShowMessage("⚠ The value cant be null or <= 0!");
                 continue;
             }
             else{
